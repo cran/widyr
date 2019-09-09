@@ -74,12 +74,13 @@ widely_ <- function(.f,
                     maximum_size = 1e7) {
   f <- function(tbl, row, column, value, ...) {
     if (inherits(tbl, "grouped_df")) {
-      # perform within each group, then restore groups
+      # perform within each group
+      # (group_by_at isn't necessary since 1.0.0, but is in earlier versions)
       ret <- tbl %>%
-        tidyr::nest_("..data", nest_cols = c(row, column, value)) %>%
-        mutate(..data = purrr::map(..data, f, row, column, value)) %>%
-        tidyr::unnest_("..data") %>%
-        group_by_(.dots = dplyr::groups(tbl))
+        tidyr::nest() %>%
+        mutate(data = purrr::map(data, f, row, column, value)) %>%
+        tidyr::unnest(data) %>%
+        dplyr::group_by_at(dplyr::group_vars(tbl))
 
       return(ret)
     }
