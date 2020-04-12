@@ -5,10 +5,10 @@ context("pairwise_count")
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(tidytext))
 
-original <- data_frame(txt = c("I felt a funeral in my brain,",
-                               "And mourners, to and fro,",
-                               "Kept treading, treading, till it seemed",
-                               "That sense was breaking through.")) %>%
+original <- tibble(txt = c("I felt a funeral in my brain,",
+                           "And mourners, to and fro,",
+                           "Kept treading, treading, till it seemed",
+                           "That sense was breaking through.")) %>%
   mutate(line = row_number()) %>%
   unnest_tokens(char, txt, token = "characters")
 
@@ -27,7 +27,7 @@ test_that("pairing and counting works", {
 
   # test additional arguments
 
-  # for self-pairs, the number of occurences should be the number of distinct
+  # for self-pairs, the number of occurrences should be the number of distinct
   # lines
   d2 <- original %>%
     pairwise_count(char, line, sort = TRUE, upper = FALSE, diag = TRUE)
@@ -56,9 +56,9 @@ test_that("pairing and counting works", {
 
 
 test_that("We can count with a weight column", {
-  d <- data_frame(col1 = c("a", "a", "a", "b", "b", "b"),
-                  col2 = c("x", "y", "z", "x", "x", "z"),
-                  weight = c(1, 1, 1, 5, 5, 5))
+  d <- tibble(col1 = c("a", "a", "a", "b", "b", "b"),
+              col2 = c("x", "y", "z", "x", "x", "z"),
+              weight = c(1, 1, 1, 5, 5, 5))
 
   ret1 <- pairwise_count(d, col2, col1)
   expect_equal(ret1$n[ret1$item1 == "z" & ret1$item2 == "y"], 1)
@@ -70,9 +70,9 @@ test_that("We can count with a weight column", {
 })
 
 
-test_that("Counts co-occurences of words in Pride & Prejudice", {
+test_that("Counts co-occurrences of words in Pride & Prejudice", {
   if (require("janeaustenr", quietly = TRUE)) {
-    words <- data_frame(text = prideprejudice) %>%
+    words <- tibble(text = prideprejudice) %>%
       mutate(line = row_number()) %>%
       unnest_tokens(word, text)
 
@@ -82,7 +82,7 @@ test_that("Counts co-occurences of words in Pride & Prejudice", {
     # check it is sorted in descending order
     expect_false(is.unsorted(rev(pairs$n)))
 
-    # check occurences of words that appear with "elizabeth"
+    # check occurrences of words that appear with "elizabeth"
     words_with_elizabeth <- words %>%
       filter(word == "elizabeth") %>%
       select(line) %>%
