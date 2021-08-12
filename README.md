@@ -22,7 +22,7 @@ Install from CRAN with:
 install.packages("widyr")
 ```
 
-Or install the development version from Github with [devtools](https://github.com/hadley/devtools):
+Or install the development version from Github with [devtools](https://github.com/r-lib/devtools):
 
 
 ```r
