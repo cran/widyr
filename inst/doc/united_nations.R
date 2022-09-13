@@ -42,7 +42,7 @@ US_cors
 US_cors %>%
   arrange(correlation)
 
-## ----US_cors_map, fig.width = 6, fig.height = 6-----------------------------------------------------
+## ----US_cors_map, fig.width = 10, fig.height = 6----------------------------------------------------
 if (require("maps", quietly = TRUE) &&
     require("fuzzyjoin", quietly = TRUE) &&
     require("countrycode", quietly = TRUE) &&
@@ -64,7 +64,7 @@ if (require("maps", quietly = TRUE) &&
          fill = "Correlation w/ US")
 }
 
-## ----country_network, fig.width = 6, fig.height = 6-------------------------------------------------
+## ----country_network, fig.width = 10, fig.height = 6------------------------------------------------
 if (require("ggraph", quietly = TRUE) &&
     require("igraph", quietly = TRUE) &&
     require("countrycode", quietly = TRUE)) {
